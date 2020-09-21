@@ -35,7 +35,7 @@ function NinePatch(div) {
 	this.padding = {top: 0, left: 0, right: 0, bottom: 0};
 	// Load 9patch from background-image
 	this.bgImage = new Image();
-	this.bgImage.src = NinePatchGetStyle(this.div, 'background-image').replace(/"/g,"").replace(/url\(|\)$/ig, "");
+	this.bgImage.src = NinePatchGetStyle(this.div, 'background-image').match(/\(\s*(.*?)\s*\)/)[1].replace(/['"]/g,'');
 	const _this = this;
 
 	this.bgImage.onload = function() {
