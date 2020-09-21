@@ -1,13 +1,13 @@
-# 9 Patch Images for HTML
+# jQuery 9 Patch
 
-Contributors: chrislondon, rpendleton  
-Tags: 9patch
+Contributors: [Chris London](https://github.com/chrislondon/), [Ryan Pendleton](https://github.com/rpendleton), [Ronald Coarite](https://stackoverflow.com/users/2154661/ronald-coarite), [Tom Swifty](https://stackoverflow.com/users/2773060/tom-swifty), [Oscar Cai](https://github.com/blackmonkey)  
+Tags: 9patch, 9-patch, nine-patch
 
-A single javascript file to allow 9 Patch images on the web.
+A single javascript file to render 9 Patch images on the webpages.
 
 ## Description
 
-This project allows you to use `.9.png` or `.9.gif` files on web pages. These
+This project allows you to render `.9.png` or `.9.gif` files on webpages. These
 files allow for rapid development of webpages with complex styles without having
 to use complex CSS3.
 
@@ -68,9 +68,9 @@ For more details see the wiki page: [Usage][usage]
 * Unfortunately Canvas isn't supported on <IE9 browsers. We have two branches to
   explore using canvas emulators but neither seem to be successful.
 
-[what-are]: https://github.com/chrislondon/9-Patch-Image-for-Websites/wiki/What-Are-9-Patch-Images
-[create]: https://github.com/chrislondon/9-Patch-Image-for-Websites/wiki/How-to-Create-9-Patch-Images
-[repo]: https://github.com/chrislondon/9-Patch-Image-for-Websites
+[what-are]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/What-Are-9-Patch-Images
+[create]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/How-to-Create-9-Patch-Images
+[repo]: https://github.com/blackmonkey/jQuery-9-Patch
 [fork]: https://help.github.com/articles/fork-a-repo/
-[installation]: https://github.com/chrislondon/9-Patch-Image-for-Websites/wiki/Installation
-[usage]: https://github.com/chrislondon/9-Patch-Image-for-Websites/wiki/Usage
+[installation]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/Installation
+[usage]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/Usage
