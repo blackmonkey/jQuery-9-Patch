@@ -30,7 +30,7 @@ For more details see the wiki page: [Installation][installation]
 
 ## Usage
 
-To test the script, or help me improve it, you can check out the repository to your local environment. Then go to folder `public_html` and start a HTTP server there. If you installed Python 3, you can start the simple HTTP server by the following command:
+To test the script, or help me improve it, you can check out the repository to your local environment. Then go to the repository root folder and start a HTTP server there. If you installed Python 3, you can start the simple HTTP server by the following command:
 
 ```batch
 python -m http.server 12345
@@ -38,7 +38,7 @@ python -m http.server 12345
 
 Then open `http://localhost:12345` in your favorite web browser, like Chrome. Then you can play with the script.
 
-To use the script in your webpage, you can check out this repository, or directly download the script [9patch.js](https://raw.githubusercontent.com/blackmonkey/jQuery-9-Patch/master/public_html/js/9patch.js) or [9patch.min.js](https://raw.githubusercontent.com/blackmonkey/jQuery-9-Patch/master/public_html/js/9patch.min.js)
+To use the script in your webpage, you can check out this repository, or directly download the script [9patch.js](https://raw.githubusercontent.com/blackmonkey/jQuery-9-Patch/master/js/9patch.js) or [9patch.min.js](https://raw.githubusercontent.com/blackmonkey/jQuery-9-Patch/master/js/9patch.min.js)
 
 Then include jQuery and `9patch.min.js` in your webpage:
 ```html
