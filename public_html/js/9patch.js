@@ -1,16 +1,4 @@
 /**
- * Get get computed style.
- *
- * @param element {Object} DOM object to fetch CSS style.
- * @param styleKey {string} the key of CSS style.
- * @return concrete style value of empty string if the style is not defined.
- */
-function NinePatchGetStyle(element, styleKey) {
-	const value = $(element).css(styleKey);
-	return value !== 'none' ? value : '';
-}
-
-/**
  * Convert RGBA components into a color integer.
  *
  * @param r {BigInt} the 8 bits integer value of red component.
@@ -28,18 +16,21 @@ function rgba2Color(r, g, b, a) {
  *
  * @constructor
  * @param div {Object} The DOM Element where the 9-path image is painted
+ * @param bgImgUrl {string} The URL of background image.
  * @returns {NinePatch} A nine path object
  */
-function NinePatch(div) {
-	this.div = $(div);
+function NinePatch(div, bgImgUrl) {
+	this.div = div;
 	this.padding = {top: 0, left: 0, right: 0, bottom: 0};
-	// Load 9patch from background-image
-	this.bgImage = new Image();
-	this.bgImage.src = NinePatchGetStyle(this.div, 'background-image').match(/\(\s*(.*?)\s*\)/)[1].replace(/['"]/g,'');
-	const _this = this;
 
+	// Load 9patch from background-image
+	const _this = this;
+	this.bgImage = new Image();
 	this.bgImage.onload = function() {
-		_this.originalBgColor = NinePatchGetStyle(_this.div, 'background-color');
+		_this.originalBgColor = _this.div.css('background-color');
+		if (_this.originalBgColor === 'none') {
+			_this.originalBgColor = '';
+		}
 		_this.div.css('background', 'none');
 
 		// Create a temporary canvas to get the 9Patch index data.
@@ -86,6 +77,7 @@ function NinePatch(div) {
 			_this.div.on('resize', _this.draw);
 		}
 	};
+	this.bgImage.src = bgImgUrl;
 }
 
 // Stores the HTMLDivElement that's using the 9patch image
@@ -300,10 +292,11 @@ window['NinePatch'] = NinePatch;
 
 // Run through all divs onload and initiate NinePatch objects
 $(function() {
-	const elms = document.getElementsByTagName('div');
-	for (let i = 0; i < elms.length; i++) {
-		if (NinePatchGetStyle(elms[i], 'background-image').match(/\.9\.(png|gif)/i)) {
-			new NinePatch(elms[i]);
+	$('div').each(function(){
+		const _this = $(this);
+		const bgImageMatch = _this.css('background-image').match(/\(\s*['"](.*?\.9\.(?:png|gif))['"]\s*\)/i);
+		if (bgImageMatch) {
+			new NinePatch(_this, bgImageMatch[1]);
 		}
-	}
+	});
 });
