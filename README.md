@@ -11,39 +11,13 @@ This project allows you to render `.9.png` or `.9.gif` files on webpages. These
 files allow for rapid development of webpages with complex styles without having
 to use complex CSS3.
 
-## What Are 9 Patch Images
+## What are 9 patch images
 
-9 Patch images are stretchable, repeatable images reduced to their smallest
-size. The simplest example would be if you were to take a rounded div and slice
-it up into 9 squares like you would a tic-tac-toe board. The four corners
-wouldn't change sizes at all but would be static while the other 5 pieces would
-be stretched or repeated to all the whole image to scale appropriately.
+9 patch images are is the exactly same concept as [NinePatch drawables](https://developer.android.com/guide/topics/graphics/drawables#nine-patch) in Android development. 
 
-With that explanation and the advent of CSS3 you might think that there is no
-reason to use 9 patch images but the name '9 patch' is a misnomer. The images
-can be sliced up into even smaller pieces.
+## How to create 9 patch images
 
-The wiki page has images that will help understand better. It also contains more
-details.
-
-9 Patch images contain an index of which piece is what by adding a 1px border to
-the image. The colors in the border determine if a piece is static (doesn't
-scale), it stretches, or it repeats.
-
-For more details see the wiki page: [What Are 9 Patch Images][what-are]
-
-## How to Create 9 Patch Images
-
-To create a 9 patch image you need to start with a `.png` or a `.gif` file.
-JPEG's don't make good 9 patch images because they blur colors.
-
-* Create the image that you would like to scale.
-* Reduce it to the smallest pieces possible.
-* Increase the canvas size to add a 1px border around the entire image
-* Mark the different pieces with the appropriate colors in the border.
-* Save the image as `[image-name].9.png` or `[image-name].9.gif`
-
-For more details see the wiki page: [How to Create 9 Patch Images][create]
+To create a 9 patch image, you can use [Android Studio](https://developer.android.com/studio/write/draw9patch) or online tools [Android Asset Studio - Simple nine-patch generator](https://romannurik.github.io/AndroidAssetStudio/nine-patches.html#&sourceDensity=320&name=example).
 
 ## Installation
 
@@ -56,21 +30,24 @@ For more details see the wiki page: [Installation][installation]
 
 ## Usage
 
-* Install the `.js` file
-* Include `.js` file in your HTML
-	* All `<div>`'s with a background image `.9.(png|gif)` will automatically be
-	  converted.
+To test the script, or help me improve it, you can check out the repository to your local environment. Then go to folder `public_html` and start a HTTP server there. If you installed Python 3, you can start the simple HTTP server by the following command:
 
-For more details see the wiki page: [Usage][usage]
+```batch
+python -m http.server 12345
+```
+
+Then open `http://localhost:12345` in your favorite web browser, like Chrome. Then you can play with the script.
+
+To use the script in your webpage, you can check out this repository, or directly download the script [9patch.js](https://raw.githubusercontent.com/blackmonkey/jQuery-9-Patch/master/public_html/js/9patch.js) or [9patch.min.js](https://raw.githubusercontent.com/blackmonkey/jQuery-9-Patch/master/public_html/js/9patch.min.js)
+
+Then include jQuery and `9patch.min.js` in your webpage:
+```html
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="9patch.min.js"></script>
+```
+
+Then all `<div>`s with a background image whose name ends with `.9.png` or `.9.gif` will automatically be rendered.
 
 ## Known Issues
 
-* Unfortunately Canvas isn't supported on <IE9 browsers. We have two branches to
-  explore using canvas emulators but neither seem to be successful.
-
-[what-are]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/What-Are-9-Patch-Images
-[create]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/How-to-Create-9-Patch-Images
-[repo]: https://github.com/blackmonkey/jQuery-9-Patch
-[fork]: https://help.github.com/articles/fork-a-repo/
-[installation]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/Installation
-[usage]: https://github.com/blackmonkey/jQuery-9-Patch/wiki/Usage
+* Unfortunately Canvas isn't supported on <IE9 browsers. We have two branches to explore using canvas emulators but neither seem to be successful.
