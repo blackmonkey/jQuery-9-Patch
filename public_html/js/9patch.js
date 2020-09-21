@@ -138,7 +138,7 @@ NinePatch.prototype.getPieces = function(data, staticColor, repeatColor) {
  */
 NinePatch.prototype.getBorderPadding = function(dataPad, pieces) {
 	const staticColor = rgba2Color(dataPad[0], dataPad[1], dataPad[2], dataPad[3]);
-	const pad = {begin: -1, end: -1};
+	const pad = {begin: 0, end: 0};
 	let i, curColor;
 
 	// padding at beginning but skip the first pixel which is on the pdding border.
