@@ -1,22 +1,3 @@
-// Attach NinePatchWindowLoad to the window load
-if (window.attachEvent) {
-	window.attachEvent('onload', NinePatchWindowLoad);
-} else if (window.addEventListener) {
-	window.addEventListener('load', NinePatchWindowLoad, false);
-} else {
-	document.addEventListener('load', NinePatchWindowLoad, false);
-}
-
-// Run through all divs onload and initiate NinePatch objects
-function NinePatchWindowLoad() {
-	var elms = document.getElementsByTagName('div');
-	for (var i = 0; i < elms.length; i++) {
-		if (NinePatchGetStyle(elms[i], 'background-image').match(/\.9\.(png|gif)/i)) {
-			new NinePatch(elms[i]);
-		}
-	}
-}
-
 // Cross browser function to get computed style.
 function NinePatchGetStyle(element, styleKey) {
 	var value = $(element).css(styleKey);
@@ -282,3 +263,13 @@ NinePatch.prototype.drawCSS3 = function() {
 }
 
 window['NinePatch'] = NinePatch;
+
+// Run through all divs onload and initiate NinePatch objects
+$(function() {
+	var elms = document.getElementsByTagName('div');
+	for (var i = 0; i < elms.length; i++) {
+		if (NinePatchGetStyle(elms[i], 'background-image').match(/\.9\.(png|gif)/i)) {
+			new NinePatch(elms[i]);
+		}
+	}
+});
