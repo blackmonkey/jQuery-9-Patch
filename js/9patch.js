@@ -277,8 +277,8 @@ NinePatch.prototype.drawCSS3 = function() {
 	ctx.drawImage(this.bgImage, -1, -1);
 
 	const encodedData = canvas.toDataURL("image/png");
-	const pixPX = this.verticalPieces[0][2] + "px " + this.horizontalPieces[2][2] + "px " + this.verticalPieces[2][2] + "px " + this.horizontalPieces[0][2] + "px";
-	const pix = this.verticalPieces[0][2] + " " + this.horizontalPieces[2][2] + " " + this.verticalPieces[2][2] + " " + this.horizontalPieces[0][2];
+	const pixPX = this.padding.top + 'px ' + this.padding.right + 'px ' + this.padding.bottom + 'px ' + this.padding.left + 'px';
+	const pix = pixPX.replaceAll('px', '');
 	this.div.css('border-width', pixPX);
 	this.div.css('border-style', 'solid');
 	this.div.css('padding', '0');
