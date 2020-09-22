@@ -34,11 +34,11 @@ function NinePatch(div, bgImgUrl) {
 		_this.div.css('background', 'none');
 
 		// Create a temporary canvas to get the 9Patch index data.
-		let tempCtx, tempCanvas;
-		tempCanvas = document.createElement('canvas');
+		let tempCanvas = document.createElement('canvas');
 		tempCanvas.width = _this.bgImage.width;
 		tempCanvas.height = _this.bgImage.height;
-		tempCtx = tempCanvas.getContext('2d');
+
+		let tempCtx = tempCanvas.getContext('2d');
 		tempCtx.drawImage(_this.bgImage, 0, 0);
 
 		// Loop over top pixels to get horizontal pieces
@@ -53,14 +53,14 @@ function NinePatch(div, bgImgUrl) {
 		_this.verticalPieces = _this.getPieces(data, staticColor, repeatColor);
 
 		// Obtaining the padding on right border
-		let dataPad = tempCtx.getImageData(_this.bgImage.width - 1, 0, 1, _this.bgImage.height).data;
-		const rightPadding = _this.getBorderPadding(dataPad, _this.verticalPieces);
+		data = tempCtx.getImageData(_this.bgImage.width - 1, 0, 1, _this.bgImage.height).data;
+		const rightPadding = _this.getBorderPadding(data, _this.verticalPieces);
 		_this.padding.top = rightPadding.begin;
 		_this.padding.bottom = rightPadding.end;
 
 		// Obtaining the padding on bottom border
-		dataPad = tempCtx.getImageData(0, _this.bgImage.height - 1, _this.bgImage.width, 1).data;
-		const bottomPadding = _this.getBorderPadding(dataPad, _this.horizontalPieces);
+		data = tempCtx.getImageData(0, _this.bgImage.height - 1, _this.bgImage.width, 1).data;
+		const bottomPadding = _this.getBorderPadding(data, _this.horizontalPieces);
 		_this.padding.left = bottomPadding.begin;
 		_this.padding.right = bottomPadding.end;
 
@@ -102,13 +102,12 @@ NinePatch.prototype.bgImage = null;
  * @return {Array} The pieces information.
  */
 NinePatch.prototype.getPieces = function(data, staticColor, repeatColor) {
-	let preType, curType, start, width, curColor, i, curPos;
 	const pieces = [];
+	let curColor = rgba2Color(data[0], data[1], data[2], data[3]);
+	let preType = (curColor === staticColor ? 's' : (curColor === repeatColor ? 'r' : 'd'));
+	let start = 1;
 
-	curColor = rgba2Color(data[0], data[1], data[2], data[3]);
-	preType = (curColor === staticColor ? 's' : (curColor === repeatColor ? 'r' : 'd'));
-	start = 1;
-
+	let curType, width, i, curPos;
 	for (i = 4; i < data.length; i += 4) {
 		curPos = i / 4 + 1;
 		curColor = rgba2Color(data[i], data[i + 1], data[i + 2], data[i + 3]);
@@ -138,7 +137,7 @@ NinePatch.prototype.getPieces = function(data, staticColor, repeatColor) {
  */
 NinePatch.prototype.getBorderPadding = function(dataPad, pieces) {
 	const staticColor = rgba2Color(dataPad[0], dataPad[1], dataPad[2], dataPad[3]);
-	const pad = {begin: 0, end: 0};
+	const padding = {begin: 0, end: 0};
 	let i, curColor;
 
 	// padding at beginning but skip the first pixel which is on the pdding border.
@@ -151,13 +150,13 @@ NinePatch.prototype.getBorderPadding = function(dataPad, pieces) {
 		}
 	}
 	if (foundPadIndex) {
-		pad.begin = i / 4 - 1; // filter out the pixel on the padding border.
+		padding.begin = i / 4 - 1; // filter out the pixel on the padding border.
 	} else {
 		// There is no padding index on the border, the begin padding should equal to the first piece size,
 		// while the end padding should equal to the last piece size.
-		pad.begin = pieces[0][2];
-		pad.end = pieces[pieces.length - 1][2];
-		return pad;
+		padding.begin = pieces[0][2];
+		padding.end = pieces[pieces.length - 1][2];
+		return padding;
 	}
 
 	// to here, there must be padding index on the border.
@@ -168,8 +167,8 @@ NinePatch.prototype.getBorderPadding = function(dataPad, pieces) {
 			break;
 		}
 	}
-	pad.end = (dataPad.length - i) / 4 - 1;
-	return pad;
+	padding.end = (dataPad.length - i) / 4 - 1;
+	return padding;
 };
 
 /**
@@ -185,7 +184,6 @@ NinePatch.prototype.draw = function() {
 	canvas.height = this.div.height() + this.padding.top + this.padding.bottom;
 
 	const ctx = canvas.getContext('2d');
-	let evenFillWidth, evenFillHeight;
 
 	// Determine the width for the static and dynamic pieces
 	let staticWidth = 0;
@@ -198,7 +196,7 @@ NinePatch.prototype.draw = function() {
 			stretchCount++;
 		}
 	}
-	evenFillWidth = (canvas.width - staticWidth) / stretchCount;
+	const evenFillWidth = (canvas.width - staticWidth) / stretchCount;
 
 	// Determine the height for the static and dynamic pieces
 	let staticHeight = 0;
@@ -210,13 +208,12 @@ NinePatch.prototype.draw = function() {
 			stretchCount++;
 		}
 	}
-	evenFillHeight = (canvas.height - staticHeight) / stretchCount;
+	const evenFillHeight = (canvas.height - staticHeight) / stretchCount;
 
 	// Loop through each of the vertical/horizontal pieces and draw on the canvas
-	let fillWidth, fillHeight;
+	let fillWidth, fillHeight, tempCanvas, tempCtx;
 	for (i = 0; i < this.verticalPieces.length; i++) {
 		for (let j = 0; j < this.horizontalPieces.length; j++) {
-
 			fillWidth = (this.horizontalPieces[j][0] === 'd') ? evenFillWidth : this.horizontalPieces[j][2];
 			fillHeight = (this.verticalPieces[i][0] === 'd') ? evenFillHeight : this.verticalPieces[i][2];
 
@@ -231,11 +228,11 @@ NinePatch.prototype.draw = function() {
 					0, 0,
 					fillWidth, fillHeight);
 			} else {
-				const tempCanvas = document.createElement('canvas');
+				tempCanvas = document.createElement('canvas');
 				tempCanvas.width = this.horizontalPieces[j][2];
 				tempCanvas.height = this.verticalPieces[i][2];
 
-				const tempCtx = tempCanvas.getContext('2d');
+				tempCtx = tempCanvas.getContext('2d');
 				tempCtx.drawImage(this.bgImage,
 					this.horizontalPieces[j][1], this.verticalPieces[i][1],
 					this.horizontalPieces[j][2], this.verticalPieces[i][2],
@@ -267,13 +264,11 @@ NinePatch.prototype.draw = function() {
  * Extract simple 9-patch images and setup CSS3 styles for it.
  */
 NinePatch.prototype.drawCSS3 = function() {
-	let ctx, canvas;
-	canvas = document.createElement('canvas');
-	ctx = canvas.getContext('2d');
-
+	const canvas = document.createElement('canvas');
 	canvas.width = this.bgImage.width - 2;
 	canvas.height = this.bgImage.height - 2;
 
+	const ctx = canvas.getContext('2d');
 	ctx.drawImage(this.bgImage, -1, -1);
 
 	const encodedData = canvas.toDataURL('image/png');
