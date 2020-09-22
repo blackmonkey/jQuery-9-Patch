@@ -255,7 +255,7 @@ NinePatch.prototype.draw = function() {
 	}
 
 	// store the canvas as the div's background
-	const encodedData = canvas.toDataURL("image/png");
+	const encodedData = canvas.toDataURL('image/png');
 	this.div.css('background', this.originalBgColor + ' url(' + encodedData + ') no-repeat');
 	this.div.css('padding-left', this.padding.left);
 	this.div.css('padding-right', this.padding.right);
@@ -276,7 +276,7 @@ NinePatch.prototype.drawCSS3 = function() {
 
 	ctx.drawImage(this.bgImage, -1, -1);
 
-	const encodedData = canvas.toDataURL("image/png");
+	const encodedData = canvas.toDataURL('image/png');
 	const pixPX = this.padding.top + 'px ' + this.padding.right + 'px ' + this.padding.bottom + 'px ' + this.padding.left + 'px';
 	const pix = pixPX.replaceAll('px', '');
 	this.div.css('border-width', pixPX);
