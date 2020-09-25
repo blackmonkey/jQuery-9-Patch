@@ -138,11 +138,13 @@ NinePatch.prototype.getPieces = function(data, staticColor, repeatColor) {
 NinePatch.prototype.getBorderPadding = function(dataPad, pieces) {
 	const staticColor = rgba2Color(dataPad[0], dataPad[1], dataPad[2], dataPad[3]);
 	const padding = {begin: 0, end: 0};
+	const minValidPixelIndex = 4;
+	const maxValidPixelIndex = dataPad.length - 8;
 	let i, curColor;
 
-	// padding at beginning but skip the first pixel which is on the pdding border.
+	// padding at beginning but skip the first pixel which is on the padding border.
 	let foundPadIndex = false;
-	for (i = 4; i < dataPad.length; i += 4) {
+	for (i = minValidPixelIndex; i <= maxValidPixelIndex; i += 4) {
 		curColor = rgba2Color(dataPad[i], dataPad[i + 1], dataPad[i + 2], dataPad[i + 3]);
 		if (curColor !== staticColor) {
 			foundPadIndex = true;
@@ -160,14 +162,14 @@ NinePatch.prototype.getBorderPadding = function(dataPad, pieces) {
 	}
 
 	// to here, there must be padding index on the border.
-	// padding at end but skip the last pixel which is on the pdding border.
-	for (i = dataPad.length - 8; i >= 0; i -= 4) {
+	// padding at end but skip the last pixel which is on the padding border.
+	for (i = maxValidPixelIndex; i >= minValidPixelIndex; i -= 4) {
 		curColor = rgba2Color(dataPad[i], dataPad[i + 1], dataPad[i + 2], dataPad[i + 3]);
 		if (curColor !== staticColor) {
 			break;
 		}
 	}
-	padding.end = (dataPad.length - i) / 4 - 1;
+	padding.end = (maxValidPixelIndex - i) / 4;
 	return padding;
 };
 
@@ -175,7 +177,7 @@ NinePatch.prototype.getBorderPadding = function(dataPad, pieces) {
  * Draw the background for the given element size.
  */
 NinePatch.prototype.draw = function() {
-	if (this.horizontalPieces === null) {
+	if (this.horizontalPieces === null || this.verticalPieces === null) {
 		return;
 	}
 
@@ -196,7 +198,7 @@ NinePatch.prototype.draw = function() {
 			stretchCount++;
 		}
 	}
-	const evenFillWidth = (canvas.width - staticWidth) / stretchCount;
+	const evenFillWidth = stretchCount > 0 ? (canvas.width - staticWidth) / stretchCount : 0;
 
 	// Determine the height for the static and dynamic pieces
 	let staticHeight = 0;
@@ -208,7 +210,7 @@ NinePatch.prototype.draw = function() {
 			stretchCount++;
 		}
 	}
-	const evenFillHeight = (canvas.height - staticHeight) / stretchCount;
+	const evenFillHeight = stretchCount > 0 ? (canvas.height - staticHeight) / stretchCount : 0;
 
 	// Loop through each of the vertical/horizontal pieces and draw on the canvas
 	let fillWidth, fillHeight, tempCanvas, tempCtx;
@@ -287,7 +289,7 @@ window['NinePatch'] = NinePatch;
 
 // Run through all divs onload and initiate NinePatch objects
 $(function() {
-	$('div').each(function(){
+	$('*').each(function(){
 		const _this = $(this);
 		const bgImageMatch = _this.css('background-image').match(/\(\s*['"](.*?\.9\.(?:png|gif))['"]\s*\)/i);
 		if (bgImageMatch) {
